@@ -176,7 +176,7 @@ comp = (
 )
 
 st.bar_chart(comp)
-    st.dataframe(comp)
+
 
 elif page=='Klienci':
     top=f.groupby('Payer name',as_index=False)['Net Value'].sum().nlargest(20,'Net Value')

@@ -170,7 +170,35 @@ comp = (
     )
     .fillna(0)
 )
-   
+if 2025 in comp.columns and 2026 in comp.columns:
+
+    yoy_df = pd.DataFrame()
+
+    yoy_df["Handlowiec"] = comp.index
+
+    yoy_df["2025"] = comp[2025].values
+
+    yoy_df["2026"] = comp[2026].values
+
+    yoy_df["Dynamika %"] = (
+        (
+            yoy_df["2026"] - yoy_df["2025"]
+        )
+        / yoy_df["2025"].replace(0, pd.NA)
+        * 100
+    ).round(1)
+
+    yoy_df = yoy_df.sort_values(
+        "Dynamika %",
+        ascending=False
+    )
+
+    st.dataframe(
+        yoy_df,
+        hide_index=True,
+        use_container_width=True
+    ) 
+    
 elif page=='Klienci':
     top=f.groupby('Payer name',as_index=False)['Net Value'].sum().nlargest(20,'Net Value')
     st.plotly_chart(px.bar(top,x='Payer name',y='Net Value'),use_container_width=True)

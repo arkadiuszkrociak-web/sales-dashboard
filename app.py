@@ -163,12 +163,19 @@ rank["Net Value"] = rank["Net Value"].map(
         hide_index=True,
         use_container_width=True
     )
-    comp=f.pivot_table(index='RKS',columns='Calendar year',values='Net Value',aggfunc='sum').fillna(0)
-    st.dataframe(comp)
-    if 2025 in comp.columns and 2024 in comp.columns:
-      comp['YoY % 25/24']=(comp[2025]-comp[2024])/comp[2024].replace(0,pd.NA)*100
-    if 2026 in comp.columns and 2025 in comp.columns:
-      comp['YoY % 26/25']=(comp[2026]-comp[2025])/comp[2025].replace(0,pd.NA)*100
+    st.subheader("📈 Sprzedaż wg lat")
+
+comp = (
+    f.pivot_table(
+        index='RKS',
+        columns='Calendar year',
+        values='Net Value',
+        aggfunc='sum'
+    )
+    .fillna(0)
+)
+
+st.bar_chart(comp)
     st.dataframe(comp)
 
 elif page=='Klienci':

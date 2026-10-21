@@ -223,8 +223,69 @@ elif page=='Handlowcy':
 elif page=='Klienci':
     top=f.groupby('Payer name',as_index=False)['Net Value'].sum().nlargest(20,'Net Value')
     st.plotly_chart(px.bar(top,x='Payer name',y='Net Value'),use_container_width=True)
-    top['Udział %']=top['Net Value']/sales*100 if sales else 0
-    st.dataframe(top)
+    st.subheader("🚀 TOP 10 klientów - wzrost sprzedaży")
+
+    client_comp = (
+        df.pivot_table(
+            index='Payer name',
+            columns='Calendar year',
+            values='Net Value',
+            aggfunc='sum'
+    )
+    .fillna(0)
+    )
+
+    if 2025 in client_comp.columns and 2026 in client_comp.columns:
+
+        growth = pd.DataFrame()
+
+        growth["Klient"] = client_comp.index
+
+        growth["2025"] = client_comp[2025].values
+
+        growth["2026"] = client_comp[2026].values
+
+        growth["Dynamika %"] = (
+        (
+            growth["2026"] - growth["2025"]
+        )
+        / growth["2025"].replace(0, pd.NA)
+        * 100
+        ).round(1)
+
+        growth = growth.dropna()
+
+        growth_growth = growth.sort_values(
+        "Dynamika %",
+        ascending=False
+        ).head(10)
+
+        growth_decline = growth.sort_values(
+        "Dynamika %",
+        ascending=True
+        ).head(10)
+
+        col1, col2 = st.columns(2)
+
+    with col1:
+
+        st.subheader("🚀 Największe wzrosty")
+
+        st.dataframe(
+            growth_growth,
+            hide_index=True,
+            use_container_width=True
+        )
+
+    with col2:
+
+        st.subheader("📉 Największe spadki")
+
+        st.dataframe(
+            growth_decline,
+            hide_index=True,
+            use_container_width=True
+        )
     
 
 elif page=='Produkty':

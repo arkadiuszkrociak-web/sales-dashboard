@@ -24,12 +24,10 @@ def load_data():
         'Net Value'
     ]
 
-    df = pd.read_excel(
-        'Raport_sprzedazy.xlsx',
-        sheet_name='Dane',
-        usecols=usecols,
-        engine='openpyxl'
-    )
+    df = pd.read_parquet(
+    'Raport_sprzedazy.parquet'
+)
+
 
     df['Calendar day'] = pd.to_datetime(
         df['Calendar day'],

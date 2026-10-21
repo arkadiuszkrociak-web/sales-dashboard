@@ -193,11 +193,27 @@ if 2025 in comp.columns and 2026 in comp.columns:
         ascending=False
     )
 
-    st.dataframe(
-        yoy_df,
-        hide_index=True,
-        use_container_width=True
-    ) 
+    def koloruj_dynamike(val):
+
+    if pd.isna(val):
+        return ""
+
+    if val > 0:
+        return "color: green; font-weight: bold"
+
+    if val < 0:
+        return "color: red; font-weight: bold"
+
+    return ""
+
+st.dataframe(
+    yoy_df.style.map(
+        koloruj_dynamike,
+        subset=["Dynamika %"]
+    ),
+    hide_index=True,
+    use_container_width=True
+)
     
 elif page=='Klienci':
     top=f.groupby('Payer name',as_index=False)['Net Value'].sum().nlargest(20,'Net Value')

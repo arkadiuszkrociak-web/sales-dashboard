@@ -95,8 +95,42 @@ if page=='Dashboard':
     st.plotly_chart(px.line(monthly,x='Calendar month',y='Net Value',color='Calendar year',title='Trend YoY'),use_container_width=True)
 
 elif page=='Handlowcy':
-    rank=f.groupby('RKS',as_index=False)['Net Value'].sum().sort_values('Net Value',ascending=False)
-    st.dataframe(rank)
+
+    rank = (
+        f.groupby('RKS', as_index=False)['Net Value']
+        .sum()
+        .sort_values('Net Value', ascending=False)
+        .reset_index(drop=True)
+    )
+
+    medale = []
+
+    for i in range(len(rank)):
+        if i == 0:
+            medale.append("🥇")
+        elif i == 1:
+            medale.append("🥈")
+        elif i == 2:
+            medale.append("🥉")
+        else:
+            medale.append(str(i + 1))
+
+    rank.insert(0, "Pozycja", medale)
+
+    st.subheader("🏆 Ranking Handlowców")
+
+    if len(rank) > 0:
+        st.metric(
+            "Lider sprzedaży",
+            rank.iloc[0]["RKS"],
+            f"{rank.iloc[0]['Net Value']:,.0f}"
+        )
+
+    st.dataframe(
+        rank,
+        hide_index=True,
+        use_container_width=True
+    )
     comp=f.pivot_table(index='RKS',columns='Calendar year',values='Net Value',aggfunc='sum').fillna(0)
     st.dataframe(comp)
     if 2025 in comp.columns and 2024 in comp.columns:

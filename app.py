@@ -225,8 +225,7 @@ elif page=='Klienci':
     st.plotly_chart(px.bar(top,x='Payer name',y='Net Value'),use_container_width=True)
     top['Udział %']=top['Net Value']/sales*100 if sales else 0
     st.dataframe(top)
-    trend=f.groupby(['Calendar day','Payer name'],as_index=False)['Net Value'].sum()
-    st.plotly_chart(px.line(trend,x='Calendar day',y='Net Value',color='Payer name'),use_container_width=True)
+    
 
 elif page=='Produkty':
     st.plotly_chart(px.bar(f.groupby('Material name',as_index=False)['Net Value'].sum().nlargest(20,'Net Value'),x='Material name',y='Net Value'),use_container_width=True)

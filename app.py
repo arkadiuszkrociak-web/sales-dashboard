@@ -167,19 +167,25 @@ elif page=='Handlowcy':
         use_container_width=True
     )
 
-    st.subheader("📊 Sprzedaż wg lat")
+st.subheader("📈 Dynamika sprzedaży")
 
-    comp = (
-        f.pivot_table(
-            index='RKS',
-            columns='Calendar year',
-            values='Net Value',
-            aggfunc='sum'
-        )
-        .fillna(0)
+if len(comp.columns) >= 2:
+
+    last_year = comp.columns.max()
+    prev_year = sorted(comp.columns)[-2]
+
+    yoy = (
+        (comp[last_year] - comp[prev_year])
+        / comp[prev_year].replace(0, pd.NA)
+        * 100
     )
 
-    st.bar_chart(comp)
+    yoy = yoy.round(1)
+
+    st.dataframe(
+        yoy.reset_index(name="YoY %"),
+        use_container_width=True
+    )
     
 elif page=='Klienci':
     top=f.groupby('Payer name',as_index=False)['Net Value'].sum().nlargest(20,'Net Value')

@@ -170,7 +170,8 @@ comp = (
     )
     .fillna(0)
 )
-    if 2025 in comp.columns and 2026 in comp.columns:
+
+if 2025 in comp.columns and 2026 in comp.columns:
 
     yoy_df = pd.DataFrame()
 
@@ -217,7 +218,7 @@ st.dataframe(
     hide_index=True,
     use_container_width=True
 )
-
+pass
 
 elif page=='Klienci':
     top=f.groupby('Payer name',as_index=False)['Net Value'].sum().nlargest(20,'Net Value')

@@ -236,7 +236,7 @@ elif page=='Klienci':
     )
 
     if 2025 in client_comp.columns and 2026 in client_comp.columns:
-
+       
         growth = pd.DataFrame()
 
         growth["Klient"] = client_comp.index
@@ -245,14 +245,31 @@ elif page=='Klienci':
 
         growth["2026"] = client_comp[2026].values
 
-        growth["Dynamika %"] = (
-        (
-            growth["2026"] - growth["2025"]
+        growth["2025"] = pd.to_numeric(
+            growth["2025"],
+            errors="coerce"
         )
-        / growth["2025"].replace(0, pd.NA)
-        * 100
-        ).round(1)
 
+        growth["2026"] = pd.to_numeric(
+            growth["2026"],
+            errors="coerce"
+        )
+
+        growth["Dynamika %"] = (
+            (
+            growth["2026"] - growth["2025"]
+            )
+            / growth["2025"].replace(0, pd.NA)
+            * 100
+        )
+
+        growth["Dynamika %"] = pd.to_numeric(
+            growth["Dynamika %"],
+            errors="coerce"
+        ).round(1)
+        
+        growth = growth.dropna(subset=["Dynamika %"])
+        
         growth = growth.dropna()
 
         growth_growth = growth.sort_values(

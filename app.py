@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from PIL import Image
 import plotly.express as px
 from io import BytesIO
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
@@ -46,8 +47,15 @@ def load_data():
     return df
 
 df=load_data()
+logo = Image.open("logo.png")
 
-st.title('📊 Analiza Sprzedaży AL-KO')
+col1, col2 = st.columns([1,5])
+
+with col1:
+    st.image(logo, width=120)
+
+with col2:
+    st.title("📊 Analiza Sprzedaży AL-KO")
 
 with st.sidebar:
     rok=st.multiselect('Rok',sorted(df['Calendar year'].dropna().unique()),default=sorted(df['Calendar year'].dropna().unique()))

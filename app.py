@@ -167,20 +167,18 @@ elif page=='Handlowcy':
         use_container_width=True
     )
 
-    st.subheader("📊 Sprzedaż wg lat")
+st.subheader("📈 Dynamika sprzedaży")
 
-    comp = (
-        f.pivot_table(
-            index='RKS',
-            columns='Calendar year',
-            values='Net Value',
-            aggfunc='sum'
-        )
-        .fillna(0)
+comp = (
+    df.pivot_table(
+        index='RKS',
+        columns='Calendar year',
+        values='Net Value',
+        aggfunc='sum'
     )
-
-    st.bar_chart(comp)
-    
+    .fillna(0)
+)
+   
 elif page=='Klienci':
     top=f.groupby('Payer name',as_index=False)['Net Value'].sum().nlargest(20,'Net Value')
     st.plotly_chart(px.bar(top,x='Payer name',y='Net Value'),use_container_width=True)

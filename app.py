@@ -317,6 +317,3 @@ buf=BytesIO();
 with pd.ExcelWriter(buf,engine='openpyxl') as writer: f.to_excel(writer,index=False)
 st.download_button('Export Excel',buf.getvalue(),'sprzedaz.xlsx')
 
-pdf=BytesIO(); doc=SimpleDocTemplate(pdf); styles=getSampleStyleSheet();
-doc.build([Paragraph('Raport sprzedaży',styles['Title']),Spacer(1,12),Paragraph(f'Sprzedaż: {sales:,.0f}',styles['BodyText'])])
-st.download_button('Export PDF',pdf.getvalue(),'raport.pdf')

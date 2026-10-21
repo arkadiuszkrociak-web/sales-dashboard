@@ -9,8 +9,42 @@ st.set_page_config(page_title='Analiza Sprzedaży',layout='wide')
 
 @st.cache_data
 def load_data():
-    df=pd.read_excel('Raport_sprzedazy.xlsx',sheet_name='Dane',engine='openpyxl')
-    df['Calendar day']=pd.to_datetime(df['Calendar day'],dayfirst=True,errors='coerce')
+
+    usecols = [
+        'Payer',
+        'Payer name',
+        'Material',
+        'Material name',
+        'Category',
+        'RKS',
+        'Calendar year',
+        'Calendar month',
+        'Calendar day',
+        'sales - credit (quantity)',
+        'Net Value'
+    ]
+
+    df = pd.read_excel(
+        'Raport_sprzedazy.xlsx',
+        sheet_name='Dane',
+        usecols=usecols,
+        engine='openpyxl'
+    )
+
+    df['Calendar day'] = pd.to_datetime(
+        df['Calendar day'],
+        dayfirst=True,
+        errors='coerce'
+    )
+
+    for col in [
+        'Payer name',
+        'Category',
+        'RKS',
+        'Material name'
+    ]:
+        df[col] = df[col].astype('category')
+
     return df
 
 df=load_data()

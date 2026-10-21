@@ -313,7 +313,22 @@ elif page=='Produkty':
     st.plotly_chart(px.bar(f.groupby('Material name',as_index=False)['sales - credit (quantity)'].sum().nlargest(20,'sales - credit (quantity)'),x='Material name',y='sales - credit (quantity)'),use_container_width=True)
     st.plotly_chart(px.treemap(f.groupby('Category',as_index=False)['Net Value'].sum(),path=['Category'],values='Net Value'),use_container_width=True)
 
-buf=BytesIO();
-with pd.ExcelWriter(buf,engine='openpyxl') as writer: f.to_excel(writer,index=False)
-st.download_button('Export Excel',buf.getvalue(),'sprzedaz.xlsx')
+if st.button("📥 Przygotuj eksport Excel"):
+
+    buf = BytesIO()
+
+    with pd.ExcelWriter(
+        buf,
+        engine='openpyxl'
+    ) as writer:
+        f.to_excel(
+            writer,
+            index=False
+        )
+
+    st.download_button(
+        'Pobierz Excel',
+        buf.getvalue(),
+        'sprzedaz.xlsx'
+    )
 

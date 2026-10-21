@@ -254,6 +254,9 @@ elif page=='Klienci':
             growth["2026"],
             errors="coerce"
         )
+        growth = growth[
+            growth["2025"] >= 50000
+        ]
 
         growth["Dynamika %"] = (
             (

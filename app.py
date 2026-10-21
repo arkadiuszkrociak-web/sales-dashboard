@@ -7,32 +7,24 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 def check_password():
 
-    def password_entered():
-        if st.session_state["password"] == "ALKO2026!":
-            st.session_state["password_correct"] = True
-            del st.session_state["password"]
-        else:
-            st.session_state["password_correct"] = False
+    if "authenticated" not in st.session_state:
+        st.session_state.authenticated = False
 
-    if "password_correct" not in st.session_state:
-        st.text_input(
-            "Hasło",
-            type="password",
-            on_change=password_entered,
-            key="password",
+    if not st.session_state.authenticated:
+
+        password = st.text_input(
+            "🔒 Podaj hasło",
+            type="password"
         )
-        st.stop()
 
-    elif not st.session_state["password_correct"]:
-        st.text_input(
-            "Hasło",
-            type="password",
-            on_change=password_entered,
-            key="password",
-        )
-        st.error("Nieprawidłowe hasło")
-        st.stop()
+        if password == "ALKO2026!":
+            st.session_state.authenticated = True
+            st.rerun()
 
+        elif password:
+            st.error("Nieprawidłowe hasło")
+
+        st.stop()
 
 check_password()
 st.set_page_config(page_title='Analiza Sprzedaży',layout='wide')

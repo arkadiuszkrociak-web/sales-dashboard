@@ -193,26 +193,30 @@ if 2025 in comp.columns and 2026 in comp.columns:
         ascending=False
     )
 
-def koloruj_dynamike(val):
+yoy_df["Trend"] = yoy_df["Dynamika %"].apply(
+    lambda x: "🟢" if x > 0 else ("⚪" if x == 0 else "🔴")
+)
+yoy_df["2025"] = yoy_df["2025"].map(
+    lambda x: f"{x:,.0f} zł".replace(",", " ")
+)
 
-    if pd.isna(val):
-        return ""
-
-    if val > 0:
-        return "color: green; font-weight: bold"
-
-    if val < 0:
-        return "color: red; font-weight: bold"
-
-    return ""
-
+yoy_df["2026"] = yoy_df["2026"].map(
+    lambda x: f"{x:,.0f} zł".replace(",", " ")
+)
 st.dataframe(
-    yoy_df.style.applymap(
-        koloruj_dynamike,
-        subset=["Dynamika %"]
-    ),
+    yoy_df[
+        [
+            "Trend",
+            "Handlowiec",
+            "2025",
+            "2026",
+            "Dynamika %"
+        ]
+    ],
+    hide_index=True,
     use_container_width=True
 )
+
     
 elif page=='Klienci':
     top=f.groupby('Payer name',as_index=False)['Net Value'].sum().nlargest(20,'Net Value')

@@ -152,32 +152,35 @@ elif page=='Handlowcy':
         st.metric(
             "Lider sprzedaży",
             rank.iloc[0]["RKS"],
-            f"{rank.iloc[0]['Net Value']:,.0f}"
+            f"{rank.iloc[0]['Net Value']:,.0f} zł"
         )
-rank["Net Value"] = rank["Net Value"].map(
-    lambda x: f"{x:,.0f} zł".replace(",", " ")
-)
 
-st.dataframe(
-    rank,
-    hide_index=True,
-    use_container_width=True
-)
-st.subheader("📈 Sprzedaż wg lat")
+    rank_display = rank.copy()
 
-comp = (
-    f.pivot_table(
-        index='RKS',
-        columns='Calendar year',
-        values='Net Value',
-        aggfunc='sum'
+    rank_display["Net Value"] = rank_display["Net Value"].map(
+        lambda x: f"{x:,.0f} zł".replace(",", " ")
     )
-    .fillna(0)
-)
 
-st.bar_chart(comp)
+    st.dataframe(
+        rank_display,
+        hide_index=True,
+        use_container_width=True
+    )
 
+    st.subheader("📊 Sprzedaż wg lat")
 
+    comp = (
+        f.pivot_table(
+            index='RKS',
+            columns='Calendar year',
+            values='Net Value',
+            aggfunc='sum'
+        )
+        .fillna(0)
+    )
+
+    st.bar_chart(comp)
+    
 elif page=='Klienci':
     top=f.groupby('Payer name',as_index=False)['Net Value'].sum().nlargest(20,'Net Value')
     st.plotly_chart(px.bar(top,x='Payer name',y='Net Value'),use_container_width=True)

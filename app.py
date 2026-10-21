@@ -158,12 +158,12 @@ rank["Net Value"] = rank["Net Value"].map(
     lambda x: f"{x:,.0f} zł".replace(",", " ")
 )
 
-    st.dataframe(
-        rank,
-        hide_index=True,
-        use_container_width=True
-    )
-    st.subheader("📈 Sprzedaż wg lat")
+st.dataframe(
+rank,
+hide_index=True,
+use_container_width=True
+)
+st.subheader("📈 Sprzedaż wg lat")
 
 comp = (
     f.pivot_table(

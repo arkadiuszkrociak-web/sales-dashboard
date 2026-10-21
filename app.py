@@ -154,6 +154,9 @@ elif page=='Handlowcy':
             rank.iloc[0]["RKS"],
             f"{rank.iloc[0]['Net Value']:,.0f}"
         )
+rank["Net Value"] = rank["Net Value"].map(
+    lambda x: f"{x:,.0f} zł".replace(",", " ")
+)
 
     st.dataframe(
         rank,

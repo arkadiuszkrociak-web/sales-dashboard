@@ -218,7 +218,7 @@ st.dataframe(
     hide_index=True,
     use_container_width=True
 )
-pass
+
 
 elif page=='Klienci':
     top=f.groupby('Payer name',as_index=False)['Net Value'].sum().nlargest(20,'Net Value')

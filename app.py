@@ -159,9 +159,9 @@ rank["Net Value"] = rank["Net Value"].map(
 )
 
 st.dataframe(
-rank,
-hide_index=True,
-use_container_width=True
+    rank,
+    hide_index=True,
+    use_container_width=True
 )
 st.subheader("📈 Sprzedaż wg lat")
 

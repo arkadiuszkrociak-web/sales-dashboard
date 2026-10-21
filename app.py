@@ -159,9 +159,9 @@ elif page=='Handlowcy':
         use_container_width=True
     )
 
-st.subheader("📈 Dynamika sprzedaży")
+    st.subheader("📈 Dynamika sprzedaży")
 
-comp = (
+    comp = (
     df.pivot_table(
         index='RKS',
         columns='Calendar year',
@@ -169,19 +169,19 @@ comp = (
         aggfunc='sum'
     )
     .fillna(0)
-)
+    )
 
-if 2025 in comp.columns and 2026 in comp.columns:
+    if 2025 in comp.columns and 2026 in comp.columns:
 
-    yoy_df = pd.DataFrame()
+        yoy_df = pd.DataFrame()
 
-    yoy_df["Handlowiec"] = comp.index
+        yoy_df["Handlowiec"] = comp.index
 
-    yoy_df["2025"] = comp[2025].values
+        yoy_df["2025"] = comp[2025].values
 
-    yoy_df["2026"] = comp[2026].values
+        yoy_df["2026"] = comp[2026].values
 
-    yoy_df["Dynamika %"] = (
+        yoy_df["Dynamika %"] = (
         (
             yoy_df["2026"] - yoy_df["2025"]
         )
@@ -194,19 +194,19 @@ if 2025 in comp.columns and 2026 in comp.columns:
         ascending=False
     )
 
-yoy_df["Trend"] = yoy_df["Dynamika %"].apply(
+    yoy_df["Trend"] = yoy_df["Dynamika %"].apply(
     lambda x: "🟢" if x > 0 else ("⚪" if x == 0 else "🔴")
-)
-yoy_df["2025"] = yoy_df["2025"].map(
+    )
+    yoy_df["2025"] = yoy_df["2025"].map(
     lambda x: f"{x:,.0f} zł".replace(",", " ")
-)
+    )
 
-yoy_df["2026"] = yoy_df["2026"].map(
+    yoy_df["2026"] = yoy_df["2026"].map(
     lambda x: f"{x:,.0f} zł".replace(",", " ")
-)
+    )
 
-st.dataframe(
-    yoy_df[
+    st.dataframe(
+        yoy_df[
         [
             "Trend",
             "Handlowiec",
@@ -217,7 +217,7 @@ st.dataframe(
     ],
     hide_index=True,
     use_container_width=True
-)
+    )
 
 
 elif page=='Klienci':

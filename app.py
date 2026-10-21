@@ -169,7 +169,7 @@ elif page=='Handlowcy':
 
 st.subheader("📈 Dynamika sprzedaży")
 
-if len(comp.columns) >= 2:
+    if len(comp.columns) >= 2:
 
     last_year = comp.columns.max()
     prev_year = sorted(comp.columns)[-2]

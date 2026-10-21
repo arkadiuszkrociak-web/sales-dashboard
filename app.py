@@ -193,7 +193,7 @@ if 2025 in comp.columns and 2026 in comp.columns:
         ascending=False
     )
 
-    def koloruj_dynamike(val):
+def koloruj_dynamike(val):
 
     if pd.isna(val):
         return ""
@@ -207,11 +207,10 @@ if 2025 in comp.columns and 2026 in comp.columns:
     return ""
 
 st.dataframe(
-    yoy_df.style.map(
+    yoy_df.style.applymap(
         koloruj_dynamike,
         subset=["Dynamika %"]
     ),
-    hide_index=True,
     use_container_width=True
 )
     

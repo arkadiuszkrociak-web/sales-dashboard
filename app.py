@@ -51,6 +51,7 @@ def load_data():
 )
 
 
+    if 'Calendar day' in df.columns:
     df['Calendar day'] = pd.to_datetime(
         df['Calendar day'],
         dayfirst=True,

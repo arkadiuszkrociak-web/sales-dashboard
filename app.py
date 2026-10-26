@@ -49,7 +49,7 @@ def load_data():
     df = pd.read_parquet(
     'Raport_sprzedazy.parquet'
 )
-
+    st.write(df.columns.tolist())
 
     if 'Calendar day' in df.columns:
         df['Calendar day'] = pd.to_datetime(
@@ -64,7 +64,8 @@ def load_data():
         'RKS',
         'Material name'
     ]:
-        df[col] = df[col].astype('category')
+        if col in df.columns:
+            df[col] = df[col].astype('category')
 
     return df
 
